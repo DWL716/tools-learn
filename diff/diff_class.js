@@ -1,3 +1,4 @@
+// 定义抽象基础节点PathNode，及实现类DiffNode（做操作的节点），Snake（对角线节点）
 class PathNode {
   constructor(i, j, prev) {
     this.i = i;
@@ -53,6 +54,8 @@ class MyersDiff {
     const size = 1 + 2 * MAX;
     const middle = Math.floor(size / 2);
     const diagonal = new Array(size);
+    // snake: 一条snake代表走一步。
+    // 例如从(0,0)->(0,1) / (0,0)->(1,0) / (0,1)->(0,2)->(2,4) 这分别为三条snake，走对角线不计入步数。
     diagonal[middle + 1] = new Snake(0, -1, null);
 
     for (let d = 0; d < MAX; d++) {
@@ -125,7 +128,8 @@ export default function () {
   return (
     <div>alibaba</div>
   )
-}`;
+}
+`;
 
 const newStr = `
 import React, { useState } from 'react';
@@ -147,7 +151,8 @@ export default function () {
 
 export {
   initName
-}`;
+}
+`;
 
 const testCase = `-import React from 'react';
 +import React, { useState } from 'react';

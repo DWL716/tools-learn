@@ -146,15 +146,18 @@ generateDiff("A BCDEF".split(""), "H I BJ CKLMNOPEF QLI ".split(""));
  * 请实现一个diff功能，根据oldStr和newStr，算出differ
  **/
 
-const oldStr = `import React from 'react';
+const oldStr = `
+import React from 'react';
 
 export default function () {
   return (
     <div>alibaba</div>
   )
-}`;
+}
+`;
 
-const newStr = `import React, { useState } from 'react';
+const newStr = `
+import React, { useState } from 'react';
 
 const initName = 'alibaba'
 
@@ -173,7 +176,8 @@ export default function () {
 
 export {
   initName
-}`;
+}
+`;
 
 const testCase = `-import React from 'react';
 +import React, { useState } from 'react';
