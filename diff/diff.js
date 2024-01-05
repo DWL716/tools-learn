@@ -37,6 +37,7 @@ function generateDiff(src, dst) {
 }
 
 function shortestEditScript(src, dst) {
+  console.log(src, dst);
   const n = src.length;
   const m = dst.length;
   const max = n + m;
@@ -126,7 +127,8 @@ function shortestEditScript(src, dst) {
   return script.reverse();
 }
 
-generateDiff("ABCABBA", "CBABAC");
+// generateDiff("A AABCABBA".split(""), "A CBABAC".split(""));
+generateDiff("A BCDEF".split(""), "H I BJ CKLMNOPEF QLI ".split(""));
 
 /**
 -A
@@ -139,3 +141,96 @@ generateDiff("ABCABBA", "CBABAC");
  A
 +C
  */
+
+/**
+ * 请实现一个diff功能，根据oldStr和newStr，算出differ
+ **/
+
+const oldStr = `import React from 'react';
+
+export default function () {
+  return (
+    <div>alibaba</div>
+  )
+}`;
+
+const newStr = `import React, { useState } from 'react';
+
+const initName = 'alibaba'
+
+export default function () {
+  const [name, setName] = useState(initName);
+  
+  return (
+    <div
+      onClick={() => setName('hema')}
+      title="name"
+    >
+      {name}
+    </div>
+  )
+}
+
+export {
+  initName
+}`;
+
+const testCase = `-import React from 'react';
++import React, { useState } from 'react';
+ 
++const initName = 'alibaba'
++
+ export default function () {
++  const [name, setName] = useState(initName);
++  
+  return (
+-   <div>alibaba</div>
++   <div
++     onClick={() => setName('hema')}
++     title="name"
++   >
++     {name}
++   </div>
+   )
+ }
++
++export {
++ initName
++}`;
+
+// generateDiff(oldStr.split("\n"), newStr.split("\n"));
+generateDiff(
+  [
+    "import React from 'react';",
+    "",
+    "export default function () {",
+    "  return (",
+    "    <div>alibaba</div>",
+    "  )",
+    "}",
+    "",
+  ],
+  [
+    "import React, { useState } from 'react';",
+    "",
+    "const initName = 'alibaba'",
+    "",
+    "export default function () {",
+    "  const [name, setName] = useState(initName);",
+    "  ",
+    "  return (",
+    "    <div",
+    "      onClick={() => setName('hema')}",
+    '      title="name"',
+    "    >",
+    "      {name}",
+    "    </div>",
+    "  )",
+    "}",
+    "",
+    "export {",
+    "  initName",
+    "}",
+    "",
+  ]
+);
