@@ -44,7 +44,7 @@ class DiffNode extends PathNode {
 
 class MyersDiff {
   constructor() {}
-
+  // 构建路径，根据原始字符串和修改后的字符串计算出差异路径
   buildPath(orig, rev) {
     if (!orig) throw new Error("旧数据不能为空");
     if (!rev) throw new Error("新数据不能为空");
@@ -53,6 +53,7 @@ class MyersDiff {
     const MAX = N + M + 1;
     const size = 1 + 2 * MAX;
     const middle = Math.floor(size / 2);
+    // 初始化 diagonal 数组
     const diagonal = new Array(size);
     // snake: 一条snake代表走一步。
     // 例如从(0,0)->(0,1) / (0,0)->(1,0) / (0,1)->(0,2)->(2,4) 这分别为三条snake，走对角线不计入步数。
@@ -83,17 +84,17 @@ class MyersDiff {
         if (i >= N && j >= M) return diagonal[kmiddle];
       }
     }
-    throw new Error("could not find a diff path");
+    throw new Error("找不到差异路径");
   }
-
+  // 判断两个字符是否相等
   equals(orig, rev) {
     return orig === rev;
   }
-
+  // 根据差异路径生成差异报告
   buildDiff(path, orig, rev) {
-    if (!path) throw new Error("path is null");
-    if (!orig) throw new Error("original sequence is null");
-    if (!rev) throw new Error("revised sequence is null");
+    if (!path) throw new Error("路径为空");
+    if (!orig) throw new Error("原始序列为空");
+    if (!rev) throw new Error("修改后序列为空");
     const result = [];
     while (path && path.prev && path.prev.j >= 0) {
       if (path.isSnake()) {
@@ -177,8 +178,11 @@ const testCase = `-import React from 'react';
 + initName
 +}`;
 
+let oldS2 = "ABCBDAB";
+let newS2 = "BDCAB";
+
 let myersDiff = new MyersDiff();
-let pathNode = myersDiff.buildPath(oldStr.split("\n"), newStr.split("\n"));
+let pathNode = myersDiff.buildPath(oldS2.split(""), newS2.split(""));
 console.log(pathNode);
 
-myersDiff.buildDiff(pathNode, oldStr.split("\n"), newStr.split("\n"));
+myersDiff.buildDiff(pathNode, oldS2.split(""), newS2.split(""));

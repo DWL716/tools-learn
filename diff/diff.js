@@ -238,3 +238,69 @@ generateDiff(
     "",
   ]
 );
+
+/********************/
+
+// 动态规划函数，用于找出两个字符串之间的最长公共子序列
+function findTextDiff(text1, text2) {
+  const m = text1.length;
+  const n = text2.length;
+  const dp = Array.from(Array(m + 1), () => Array(n + 1).fill(0));
+
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (text1[i - 1] === text2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+      } else {
+        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
+  }
+
+  // 根据最长公共子序列找出差异
+  let diff = [];
+  let i = m,
+    j = n;
+  while (i > 0 && j > 0) {
+    if (text1[i - 1] === text2[j - 1]) {
+      diff.unshift(`  ${text1[i - 1]}`);
+      i--;
+      j--;
+    } else if (dp[i - 1][j] > dp[i][j - 1]) {
+      diff.unshift(`- ${text1[i - 1]}`);
+      i--;
+    } else {
+      diff.unshift(`+ ${text2[j - 1]}`);
+      j--;
+    }
+  }
+
+  while (i > 0) {
+    diff.unshift(`- ${text1[i - 1]}`);
+    i--;
+  }
+
+  while (j > 0) {
+    diff.unshift(`+ ${text2[j - 1]}`);
+    j--;
+  }
+
+  return diff;
+}
+/**
+ * A B C B D A B
+ * B
+ * C
+ * B
+ * D
+ * A
+ * B
+ */
+
+// 示例文本
+const text1 = "ABCBDAB";
+const text2 = "BDCAB";
+
+// 找出文本差异
+const textDiff = findTextDiff(text1, text2);
+textDiff.forEach((line) => console.log(line));

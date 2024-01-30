@@ -9,6 +9,8 @@ https://cjting.me/2017/05/13/how-git-generate-diff/
 <!-- git 生成 diff 原理：Myers 差分算法 | 大艺术家_SN (chenshinan.github.io) -->
 https://chenshinan.github.io/2019/05/02/git%E7%94%9F%E6%88%90diff%E5%8E%9F%E7%90%86%EF%BC%9AMyers%E5%B7%AE%E5%88%86%E7%AE%97%E6%B3%95/
 
+// -------
+https://www.cnblogs.com/oto-G/p/16357245.html
 <!-- Myers论文 -->
 http://xmailserver.org/diff2.pdf
 
