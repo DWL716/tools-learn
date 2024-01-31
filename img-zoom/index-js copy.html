@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      .box {
+        width: 400px;
+        height: 600px;
+        margin: 0 auto;
+        overflow: hidden;
+        margin-top: 50px;
+        position: relative;
+      }
+      .box img {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <img id="zoom-img" src="./乌孙.png" alt="" />
+    </div>
+
+    <script type="text/javascript">
+      let ratol = 1;
+      let zoomImg = document.querySelector("#zoom-img");
+      let zoomBox = document.querySelector(".box");
+      let def_w = zoomImg.getBoundingClientRect().width;
+      let def_h = zoomImg.getBoundingClientRect().height;
+      let setp = 20;
+      let isT = true;
+      let old_l = 0;
+      let old_t = 0;
+      let deepL = 0;
+      let deepT = 0;
+      let o_L = 0;
+      let o_T = 0;
+
+      zoomImg.onmousewheel = function (e) {
+        console.log("向上滑", e, zoomImg.getBoundingClientRect());
+        let orgiin_Left = e.clientX - e.target.getBoundingClientRect().left;
+        let orgiin_Top = e.clientY - e.target.getBoundingClientRect().top;
+        let box_Left = e.clientX - zoomBox.getBoundingClientRect().left;
+        let box_Top = e.clientY - zoomBox.getBoundingClientRect().top;
+
+        console.log(orgiin_Left, orgiin_Top);
+        console.log(box_Left, box_Top);
+
+        // if (old_l === 0 || old_t == 0) {
+
+        // }
+        if (old_l === 0 || old_t == 0) {
+          deepL = box_Left;
+          deepT = box_Top;
+        }
+
+        old_l = orgiin_Left;
+        old_t = orgiin_Top;
+
+        let old_W = e.target.getBoundingClientRect().width;
+        let old_H = e.target.getBoundingClientRect().height;
+
+        if (e.wheelDelta > 0) {
+          console.log("向上滑");
+          e.target.style.height =
+            e.target.getBoundingClientRect().height +
+            e.target.getBoundingClientRect().height * 0.05 +
+            "px";
+          e.target.style.width =
+            e.target.getBoundingClientRect().width +
+            e.target.getBoundingClientRect().width * 0.05 +
+            "px";
+        } else {
+          console.log("向下滑", zoomImg.getBoundingClientRect().width);
+          e.target.style.height =
+            e.target.getBoundingClientRect().height -
+            e.target.getBoundingClientRect().height * 0.05 +
+            "px";
+          e.target.style.width =
+            e.target.getBoundingClientRect().width -
+            e.target.getBoundingClientRect().width * 0.05 +
+            "px";
+          if (
+            def_w >= zoomImg.getBoundingClientRect().width ||
+            def_h >= zoomImg.getBoundingClientRect().height
+          ) {
+            console.log("超出范围了");
+            ratol = 1;
+            e.target.style.height = def_h + "px";
+            e.target.style.width = def_w + "px";
+          }
+        }
+        let top =
+          zoomBox.getBoundingClientRect().top -
+          e.target.getBoundingClientRect().top;
+        let left =
+          zoomBox.getBoundingClientRect().left -
+          e.target.getBoundingClientRect().left;
+        console.log("----", left, top);
+
+        // e.target.style.top = top + (e.clientY - top) * (0.05 - 1) + "px";
+        // e.target.style.left = left + (e.clientX - left) * (0.05 - 1) + "px";
+
+        if (box_Top - deepT !== 0) {
+          o_T =
+            (box_Top - deepT) *
+            (1 - e.target.getBoundingClientRect().width / 400);
+        }
+        if (box_Left - deepL !== 0) {
+          o_L =
+            (box_Left - deepL) *
+            (1 - e.target.getBoundingClientRect().width / 400);
+        }
+
+        e.target.style.top =
+          box_Top -
+          box_Top * (e.target.getBoundingClientRect().width / 400) -
+          o_T +
+          "px";
+        e.target.style.left =
+          box_Left -
+          box_Left * (e.target.getBoundingClientRect().width / 400) -
+          o_L +
+          "px";
+        console.log(
+          (box_Top - deepT) * (e.target.getBoundingClientRect().width / 400),
+          e.target.getBoundingClientRect().width / 400,
+          box_Top - deepT
+        );
+        console.log("aaaa", box_Top, deepT);
+        deepL = box_Left;
+        deepT = box_Top;
+
+        console.log("old_t", old_t);
+      };
+
+      zoomImg.onmousemove = function (e) {
+        // old_t = e.clientY - e.target.getBoundingClientRect().top;
+        // old_l = e.clientX - e.target.getBoundingClientRect().left;
+        // deepT = e.clientY - e.target.getBoundingClientRect().top;
+        // deepL = e.clientX - e.target.getBoundingClientRect().left;
+        // console.log("====", old_t, old_l);
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      .box {
+        width: 400px;
+        height: 600px;
+        margin: 0 auto;
+        overflow: hidden;
+        margin-top: 50px;
+        position: relative;
+      }
+      .box img {
+        display: block;
+        transform-origin: left top;
+        /* position: absolute;
+        top: 0;
+        left: 0; */
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <img id="zoom-img" src="./乌孙.png" alt="" />
+    </div>
+
+    <script type="text/javascript">
+      let ratol = 1;
+      let zoomImg = document.querySelector("#zoom-img");
+      let zoomBox = document.querySelector(".box");
+      let def_w = zoomImg.getBoundingClientRect().width;
+      let def_h = zoomImg.getBoundingClientRect().height;
+      let setp = 18;
+      let isT = true;
+      let old_l = 0;
+      let old_t = 0;
+      zoomImg.onmousewheel = function (e) {
+        console.log("向上滑", e, zoomImg.getBoundingClientRect());
+        let orgiin_Left = e.clientX - e.target.getBoundingClientRect().left;
+        let orgiin_Top = e.clientY - e.target.getBoundingClientRect().top;
+        console.log(orgiin_Left, orgiin_Top);
+
+        if (old_l === 0 || old_t == 0) {
+          old_l = orgiin_Left;
+          old_t = orgiin_Top;
+        }
+
+        // if (old_l !== orgiin_Left || old_t !== orgiin_Top) {
+        //   old_l = orgiin_Left;
+        //   old_t = orgiin_Top;
+        // }
+
+        if (e.wheelDelta > 0) {
+          console.log("向上滑");
+          e.target.style.transform = `scale(${(ratol += 0.1)})`;
+        } else {
+          console.log("向下滑", zoomImg.getBoundingClientRect().width);
+          e.target.style.transform = `scale(${(ratol -= 0.1)})`;
+          if (
+            def_w >= zoomImg.getBoundingClientRect().width ||
+            def_h >= zoomImg.getBoundingClientRect().height
+          ) {
+            console.log("超出范围了");
+            ratol = 1;
+            e.target.style.transform = "scale(1)";
+          }
+        }
+        console.log(
+          "====",
+          orgiin_Top,
+          old_t,
+          e.target.style.top,
+          ratol,
+          (orgiin_Top - old_t) / ratol,
+          old_t + (orgiin_Top - old_t) / ratol
+        );
+        e.target.style.transformOrigin = `${
+          (1 - ratol) * (orgiin_Left / 2 - e.clientX)
+        }px ${(1 - ratol) * (orgiin_Top / 2 - e.clientY)}px`;
+        // e.target.style.transformOrigin = `${-old_l + orgiin_Left * ratol}px ${
+        //   -old_t + orgiin_Top * ratol
+        // }px`;
+        // e.target.style.transformOrigin = `${orgiin_Left}px ${orgiin_Top}px`;
+      };
+    </script>
+  </body>
+</html>
