@@ -30,7 +30,7 @@
   </head>
   <body>
     <div class="box">
-      <img id="zoom-img" src="./乌孙.png" alt="" />
+      <img id="zoom-img" src="./img/乌孙.png" alt="" />
     </div>
 
     <script type="text/javascript">
@@ -113,16 +113,16 @@
         // e.target.style.top = top + (e.clientY - top) * (0.05 - 1) + "px";
         // e.target.style.left = left + (e.clientX - left) * (0.05 - 1) + "px";
 
-        if (box_Top - deepT !== 0) {
-          o_T =
-            (box_Top - deepT) *
-            (1 - e.target.getBoundingClientRect().width / 400);
-        }
-        if (box_Left - deepL !== 0) {
-          o_L =
-            (box_Left - deepL) *
-            (1 - e.target.getBoundingClientRect().width / 400);
-        }
+        // if (box_Top - deepT !== 0) {
+        //   o_T =
+        //     (box_Top - deepT) *
+        //     (1 - e.target.getBoundingClientRect().width / 400);
+        // }
+        // if (box_Left - deepL !== 0) {
+        //   o_L =
+        //     (box_Left - deepL) *
+        //     (1 - e.target.getBoundingClientRect().width / 400);
+        // }
 
         e.target.style.top =
           box_Top -
@@ -134,24 +134,10 @@
           box_Left * (e.target.getBoundingClientRect().width / 400) -
           o_L +
           "px";
-        console.log(
-          (box_Top - deepT) * (e.target.getBoundingClientRect().width / 400),
-          e.target.getBoundingClientRect().width / 400,
-          box_Top - deepT
-        );
-        console.log("aaaa", box_Top, deepT);
         deepL = box_Left;
         deepT = box_Top;
 
         console.log("old_t", old_t);
-      };
-
-      zoomImg.onmousemove = function (e) {
-        // old_t = e.clientY - e.target.getBoundingClientRect().top;
-        // old_l = e.clientX - e.target.getBoundingClientRect().left;
-        // deepT = e.clientY - e.target.getBoundingClientRect().top;
-        // deepL = e.clientX - e.target.getBoundingClientRect().left;
-        // console.log("====", old_t, old_l);
       };
     </script>
   </body>

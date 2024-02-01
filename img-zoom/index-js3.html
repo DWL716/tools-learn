@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: -webkit-linear-gradient(top, transparent 99px, #ccc 99px),
+          -webkit-linear-gradient(left, transparent 99px, #ccc 99px);
+        background-size: 100px 100px;
+      }
+
+      .container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 400px;
+        height: 600px;
+        margin-top: 200px;
+        margin-left: 200px;
+        overflow: hidden;
+      }
+
+      img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform-origin: 0% 0%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container" id="container">
+      <img id="img" src="./img/乌孙.png" alt="" />
+    </div>
+    <script>
+      let s = 1; //缩放倍率
+      let lasts = 1;
+      let dep = 0.2;
+      let minL = 1;
+      let maxL = 20;
+
+      const img = document.getElementById("img");
+      const container = document.getElementById("container");
+
+      // 缩放前，鼠标位置相对图片缩放为1时的位置
+      const getSourePosition = (el, s, x, y) => {
+        console.log("sss", s);
+        let sourceTop = +el.style.top.slice(0, -2);
+        let sourceLeft = +el.style.left.slice(0, -2);
+
+        let x2 = (x - sourceLeft) / s;
+        let y2 = (y - sourceTop) / s;
+
+        console.log("diff", x, sourceLeft, s);
+
+        return { x2, y2 };
+      };
+
+      // 缩放后，图片需要的位移
+      getXY = (s, x, y, x2, y2) => {
+        // 缩放后的位置
+        let x3 = x2 * s;
+        let y3 = y2 * s;
+
+        // 缩放后的位置移动到鼠标位置，需要的位移
+        let x4 = x - x3;
+        let y4 = y - y3;
+
+        return { x4, y4 };
+      };
+
+      // 设置图片位置
+      const setPosition = (el, x4, y4, s) => {
+        el.style.left = `${x4}px`;
+        el.style.top = `${y4}px`;
+        el.style.transform = `scale(${s})`;
+      };
+
+      img.addEventListener("mousewheel", (e) => {
+        let { x, y, deltaY } = e;
+        // 计算出鼠标在容器中的位置
+        y -= container.getBoundingClientRect().top;
+        x -= container.getBoundingClientRect().left;
+        s = deltaY < 0 ? s + dep : s - dep;
+        s = Math.min(Math.max(minL, s), maxL);
+        // console.log("--", x, y, s);
+        // 放大
+        if (deltaY < 0) {
+          let { x2, y2 } = getSourePosition(img, s - dep, x, y);
+
+          let { x4, y4 } = getXY(s, x, y, x2, y2);
+
+          if (lasts < maxL) {
+            lasts = s;
+            setPosition(img, x4, y4, s);
+          }
+        }
+        // 缩小
+        if (deltaY > 0) {
+          let { x2, y2 } = getSourePosition(img, s + dep, x, y);
+
+          let { x4, y4 } = getXY(s, x, y, x2, y2);
+
+          if (lasts > minL) {
+            lasts = s;
+            setPosition(img, x4, y4, s);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

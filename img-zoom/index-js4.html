@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      .box {
+        width: 400px;
+        height: 600px;
+        margin: 0 auto;
+        overflow: hidden;
+        margin-top: 50px;
+        position: relative;
+      }
+      .box img {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <img id="zoom-img" src="./img/乌孙.png" alt="" />
+    </div>
+
+    <script type="text/javascript">
+      let s = 1;
+      let zoomImg = document.querySelector("#zoom-img");
+      let zoomBox = document.querySelector(".box");
+      let def_w = zoomImg.getBoundingClientRect().width;
+      let def_h = zoomImg.getBoundingClientRect().height;
+
+      let box_W = zoomBox.getBoundingClientRect().width;
+      let box_H = zoomBox.getBoundingClientRect().height;
+
+      function setPost(e, x, y, s) {
+        zoomImg.style.left = x + "px";
+        zoomImg.style.top = y + "px";
+
+        // if (
+        //   def_w >= zoomImg.getBoundingClientRect().width ||
+        //   e.target.style.height >= zoomImg.getBoundingClientRect().height
+        // ) {
+        //   console.log("超出范围了");
+        //   s = 1;
+        //   e.target.style.height = def_h + "px";
+        //   e.target.style.width = def_w + "px";
+        // }
+      }
+
+      function zoom(e, s) {
+        zoomImg.style.width = box_W * s + "px";
+        zoomImg.style.height = box_H * s + "px";
+        // zoomImg.style.transform = `scale(${s})`;
+      }
+
+      zoomImg.onmousewheel = function (e) {
+        console.log("向上滑");
+
+        let orgiin_Left = e.clientX - e.target.getBoundingClientRect().left;
+        let orgiin_Top = e.clientY - e.target.getBoundingClientRect().top;
+
+        let box_Left = e.clientX - zoomBox.getBoundingClientRect().left;
+        let box_Top = e.clientY - zoomBox.getBoundingClientRect().top;
+
+        let old_W = e.target.getBoundingClientRect().width;
+        let old_H = e.target.getBoundingClientRect().height;
+
+        if (e.wheelDelta > 0) {
+          console.log("向上滑");
+          s -= 0.1;
+          // 缩放前图片的位置
+          let sourceTop = +zoomImg.style.top.slice(0, -2) || 0;
+          let sourceLeft = +zoomImg.style.left.slice(0, -2) || 0;
+          // 计算出图片需要移动的位置
+          let x = box_Left - ((box_Left - sourceLeft) / (s + 0.1)) * s;
+          let y = box_Top - ((box_Top - sourceTop) / (s + 0.1)) * s;
+          setPost(e, x, y, s);
+
+          zoom(e, s);
+        } else {
+          console.log("向下滑");
+          s += 0.1;
+
+          let sourceTop = +zoomImg.style.top.slice(0, -2) || 0;
+          let sourceLeft = +zoomImg.style.left.slice(0, -2) || 0;
+          console.log("source", sourceTop, zoomImg.style.top.slice(0, -2));
+          let x = box_Left - ((box_Left - sourceLeft) / (s - 0.1)) * s;
+          let y = box_Top - ((box_Top - sourceTop) / (s - 0.1)) * s;
+
+          setPost(e, x, y, s);
+
+          zoom(e, s);
+        }
+      };
+    </script>
+  </body>
+</html>
