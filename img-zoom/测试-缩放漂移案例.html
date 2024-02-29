@@ -41,6 +41,13 @@
       let def_w = zoomImg.getBoundingClientRect().width;
       let def_h = zoomImg.getBoundingClientRect().height;
 
+      let old_l = 0;
+      let old_t = 0;
+      let deepL = 0;
+      let deepT = 0;
+      let o_L = 0;
+      let o_T = 0;
+
       zoomImg.onmousewheel = function (e) {
         console.log("向上滑", e, zoomImg.getBoundingClientRect());
         let orgiin_Left = e.clientX - e.target.getBoundingClientRect().left;
@@ -82,8 +89,26 @@
          * 因为 box_Top * ratol 并不是图片真正的缩放，需要加上图片的真实top来进行计算
          * ----- 参考 ./index-js4.html 文件
          */
+
+        if (old_l === 0 || old_t == 0) {
+          deepL = box_Left;
+          deepT = box_Top;
+        }
+
+        old_l = orgiin_Left;
+        old_t = orgiin_Top;
+
+        if (box_Top - deepT !== 0) {
+          o_T -= +zoomImg.style.top.slice(0, -2) * 0.05;
+        }
+        if (box_Left - deepL !== 0) {
+          o_L -= +zoomImg.style.left.slice(0, -2) * 0.05;
+        }
+        console.log("ratol", ratol, box_Left - deepL, o_L);
         e.target.style.top = box_Top - box_Top * ratol + "px";
         e.target.style.left = box_Left - box_Left * ratol + "px";
+        deepL = box_Left;
+        deepT = box_Top;
       };
     </script>
   </body>
